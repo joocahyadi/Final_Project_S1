@@ -45,7 +45,6 @@ input_size_title = len(title_tokenizer.word_index)+1
 
 
 ## Deep learning model
-### Encoder
 encoder = Encoder(input_dim=input_size_article, hidden_size=hidden_size, embedding_dim=embedding_dim, dropout_rate=dropout_rate)
 decoder = Decoder(input_dim=input_size_title, hidden_size=hidden_size, embedding_dim=embedding_dim, dropout_rate=dropout_rate)
 

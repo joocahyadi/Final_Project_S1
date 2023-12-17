@@ -9,27 +9,53 @@
 # Import Libraries
 import requests
 import json
+import streamlit as st
 
-# Main part of this script
-if __name__ == "__main__":
+# Function
+def give_prediction(input_user):
 
     # Define the url
     url = "http://127.0.0.1:8000/predict"
 
-    # Get the user input text
-    user_text = str(input('Enter the text/article here: '))
-
     # Define the input data in JSON format
-    input_data = {"input_text": user_text}
+    input_data = {"input_text": input_user}
 
     # Post the input_data to the ML model and request the prediction
     response = requests.post(url=url, params=input_data)
 
-    # Parse the json formatted output
+    # Return the result (predicted title to the user)
     result = json.loads(response.content)
 
-    # Print the status code and result
-    print('Status code:', response.status_code)
-    print()
-    print('Title predicted by the model:')
-    print(result['predicted_title'])
+    return result
+
+
+# Main part of this script
+if __name__ == "__main__":
+    # UI Part
+    # Title
+    st.title("Title Recommendation for Indonesian News Article :newspaper:")
+
+    # Introduction
+    st.markdown('<br>', unsafe_allow_html=True)
+    st.subheader('Hi and Welcome!')
+    st.write(
+        """
+        This web application will recommend the appropriate title for an Indonesian News Article that you have.
+        Simply put your article in the box below and press "Predict for Me!" button.
+        
+        Wait a few seconds and voila! The result will pop out of nowhere! :tada:
+        """
+    )
+
+    # Create the input field
+    st.markdown('<br>', unsafe_allow_html=True)
+    st.subheader('Give me your article!')
+    user_text = st.text_area(label='You can put it here:')
+
+    # Create the button for prediction
+    if st.button('Predict for Me!'):
+        pred = give_prediction(user_text)
+
+        # Run the give_prediction function
+        st.subheader(f"Your predicted title:")
+        st.write(pred['predicted_title'])
